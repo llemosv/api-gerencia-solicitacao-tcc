@@ -3,6 +3,11 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3599);
+
+  app.enableCors();
+
+  await app.listen(3599, () => {
+    console.log('\x1b[33m%s\x1b[0m', `=> 🚀 ApiGerenciaSolicitacaoTcc RUNNING ON PORT: 3599`);
+  });
 }
 bootstrap();

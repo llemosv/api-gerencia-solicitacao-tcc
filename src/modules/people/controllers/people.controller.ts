@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Get, Delete, UsePipes, ValidationPipe, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, UsePipes, ValidationPipe, Param, Put, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ValidacaoParametrosPipe } from 'src/common/pipes/validacao-parametros.pipe';
 import { UpdatePeopleDto } from '../dtos/update-people.dto';
 
@@ -24,6 +25,7 @@ export class PeopleController {
     return create;
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('list')
   async getAll(): Promise<any> {
     const search = await this.peopleService.getAllPlayers();

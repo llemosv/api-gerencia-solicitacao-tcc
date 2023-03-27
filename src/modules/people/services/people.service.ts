@@ -5,8 +5,9 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { People } from '../interfaces/people.interface';
 import { PeopleType } from '../interfaces/people-type.interface';
-import { ActingArea } from '../interfaces/acting-area.interface';
 import { UpdatePeopleDto } from '../dtos/update-people.dto';
+
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class PeopleService {
@@ -28,6 +29,8 @@ export class PeopleService {
     if (peopleExists) {
       throw new BadRequestException(`O e-mail ${email} já possui um cadastro na nossa base de dados.`);
     }
+
+    createPeopleDto.senha = bcrypt.hashSync(createPeopleDto.senha, 10);
 
     const createdPeople = new this.peopleModel(createPeopleDto);
 
