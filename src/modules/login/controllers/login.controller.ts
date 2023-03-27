@@ -1,4 +1,5 @@
-import { Controller, Post, Body, UsePipes } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { LoginDto } from '../dtos/login.dto';
 
 import { LoginService } from '../services/login.service';
@@ -10,11 +11,13 @@ export class LoginController {
 
   @Post()
   @UsePipes(LocalAuthGuard)
-  async login(@Body() loginDto: LoginDto): Promise<any> {
+  async login(@Body() loginDto: LoginDto, @Res() response: Response): Promise<any> {
+    console.log(loginDto);
+
     await this.loginService.validateUser(loginDto);
 
     const token = await this.loginService.generateToken(loginDto);
 
-    return { token };
+    return response.status(200).json({ token });
   }
 }

@@ -7,5 +7,5 @@ export class LoginDto {
 
     @IsNotEmpty({ message: 'A senha não pode ser vazio.' })
     @MinLength(5, { message: 'A senha deve conter no mínimo 5 caracteres.' })
-    password: string;
+    senha: string;
 }

@@ -29,8 +29,8 @@ export class LoginService {
     if (!peopleExists) {
       throw new NotFoundException(`Pessoa com o email: ${email} não foi encontrada no nosso sistema.`);
     }
-
-    const passwordIsOk = bcrypt.compareSync(loginDTO.password, peopleExists.senha);
+    console.log('aq');
+    const passwordIsOk = bcrypt.compareSync(loginDTO.senha, peopleExists.senha);
 
     if (!passwordIsOk) throw new BadRequestException('Senha Incorreta.');
 
