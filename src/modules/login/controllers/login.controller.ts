@@ -12,12 +12,10 @@ export class LoginController {
   @Post()
   @UsePipes(LocalAuthGuard)
   async login(@Body() loginDto: LoginDto, @Res() response: Response): Promise<any> {
-    console.log(loginDto);
+    const user = await this.loginService.validateUser(loginDto);
 
-    await this.loginService.validateUser(loginDto);
+    const token = await this.loginService.generateToken(loginDto, user);
 
-    const token = await this.loginService.generateToken(loginDto);
-
-    return response.status(200).json({ token });
+    return response.status(200).json(token);
   }
 }

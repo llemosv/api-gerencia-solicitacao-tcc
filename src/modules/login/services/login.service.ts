@@ -17,8 +17,15 @@ export class LoginService {
 
   private readonly jwtSecret: string = String(process.env.JWT_SECRET_KEY);
 
-  async generateToken(payload: any): Promise<string> {
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: '1h' });
+  async generateToken(payload: any, user: any) {
+    const people = {
+      name: user.nome,
+      email: payload.email,
+    };
+    return {
+      user: people,
+      token: jwt.sign(payload, this.jwtSecret, { expiresIn: '1h' }),
+    };
   }
 
   async validateUser(loginDTO: LoginDto) {
@@ -27,9 +34,9 @@ export class LoginService {
     const peopleExists = await this.peopleModel.findOne({ email }).exec();
 
     if (!peopleExists) {
-      throw new NotFoundException(`Pessoa com o email: ${email} não foi encontrada no nosso sistema.`);
+      throw new NotFoundException(`Usuário não encontrado.`);
     }
-    console.log('aq');
+
     const passwordIsOk = bcrypt.compareSync(loginDTO.senha, peopleExists.senha);
 
     if (!passwordIsOk) throw new BadRequestException('Senha Incorreta.');

@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Get, Delete, UsePipes, ValidationPipe, Param, Put } from '@nestjs/common';
+import { Controller, Post, Body, Get, Delete, UsePipes, ValidationPipe, Param, Put, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ActingAreaService } from '../services/acting-area.service';
 import { PeopleService } from '../services/people.service';
 
@@ -22,8 +23,9 @@ export class ActingAreaController {
     return createArea;
   }
 
+  //@UseGuards(AuthGuard('jwt'))
   @Get('listArea')
-  @UsePipes(ValidationPipe)
+  //@UsePipes(ValidationPipe)
   async getAllAreas(): Promise<any> {
     const areas = await this.actingAreaService.getAllAreas();
 
