@@ -1,8 +1,6 @@
 import { Controller, Post, Body, Get, Delete, UsePipes, ValidationPipe, Param, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ValidacaoParametrosPipe } from 'src/common/pipes/validacao-parametros.pipe';
 import { UpdatePeopleDto } from '../dtos/update-people.dto';
-
 import { PeopleService } from '../services/people.service';
 
 @Controller('api/v1/people')
@@ -34,10 +32,7 @@ export class PeopleController {
 
   @Put('update/:_id')
   @UsePipes(ValidationPipe)
-  async update(
-    @Param('_id', ValidacaoParametrosPipe) _id: string,
-    @Body() updatePeopleDto: UpdatePeopleDto,
-  ): Promise<any> {
+  async update(@Param('_id') _id: string, @Body() updatePeopleDto: UpdatePeopleDto): Promise<any> {
     await this.peopleService.updatePeople(_id, updatePeopleDto);
   }
 }
