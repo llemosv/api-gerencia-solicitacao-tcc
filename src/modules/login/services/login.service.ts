@@ -11,16 +11,18 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class LoginService {
-  constructor(@InjectModel('People') private readonly peopleModel: Model<People>) { }
+  constructor(@InjectModel('People') private readonly peopleModel: Model<People>) {}
 
   private readonly logger = new Logger(LoginService.name);
 
   private readonly jwtSecret: string = String(process.env.JWT_SECRET_KEY);
 
   async generateToken(payload: any, user: any) {
+    console.log('user', user);
     const people = {
       name: user.nome,
       email: payload.email,
+      tipo_pessoa: user.id_tipo_pessoa.descricao,
     };
     return {
       user: people,
@@ -31,7 +33,7 @@ export class LoginService {
   async validateUser(loginDTO: LoginDto) {
     const { email } = loginDTO;
 
-    const peopleExists = await this.peopleModel.findOne({ email }).exec();
+    const peopleExists = await this.peopleModel.findOne({ email }).populate('id_tipo_pessoa').exec();
 
     if (!peopleExists) {
       throw new NotFoundException(`Usuário não encontrado.`);
