@@ -18,7 +18,7 @@ export class SolicitationController {
   constructor(private readonly solicitationService: SolicitationService) {}
 
   @Post('')
-  @UseGuards(AuthGuard('jwt'))
+  //@UseGuards(AuthGuard('jwt'))
   async createSolicitation(@Body() createSolicitationDto: any): Promise<any> {
     const create = await this.solicitationService.create(createSolicitationDto);
 
