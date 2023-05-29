@@ -53,16 +53,16 @@ export class ActingAreaService {
     const formattedResults = filteredResults.reduce(
       (result: any, item: any) => {
         const existingPerson = result.find(
-          (person) => person.id_pessoa === item.id_pessoa._id.toString()
+          (person: any) => person.id_pessoa === item.id_pessoa._id.toString()
         );
 
         if (existingPerson) {
-          existingPerson.areas.push(item.id_area.descricao);
+          existingPerson.descricao += `, ${item.id_area.descricao}`;
         } else {
           result.push({
             id_pessoa: item.id_pessoa._id.toString(),
             nome: item.id_pessoa.nome,
-            areas: [item.id_area.descricao],
+            descricao: `Área(s) de atuação: ${item.id_area.descricao}`,
           });
         }
 
