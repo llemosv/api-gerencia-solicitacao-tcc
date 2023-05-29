@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LoginModule } from './modules/login/login.module';
 import { PeopleModule } from './modules/people/people.module';
+import { SolicitationModule } from './modules/solicitations/solicitation.module';
 
 @Module({
   imports: [
@@ -10,12 +11,13 @@ import { PeopleModule } from './modules/people/people.module';
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-      },
+      }
     ),
     PeopleModule,
     LoginModule,
+    SolicitationModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

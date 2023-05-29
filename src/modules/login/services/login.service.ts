@@ -1,6 +1,11 @@
 import { Model } from 'mongoose';
 
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { People } from '../interfaces/people.interface';
@@ -11,7 +16,9 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class LoginService {
-  constructor(@InjectModel('People') private readonly peopleModel: Model<People>) { }
+  constructor(
+    @InjectModel('People') private readonly peopleModel: Model<People>
+  ) {}
 
   private readonly logger = new Logger(LoginService.name);
 
@@ -19,6 +26,7 @@ export class LoginService {
 
   async generateToken(payload: any, user: any) {
     const people = {
+      id: user._id,
       name: user.nome,
       email: payload.email,
     };

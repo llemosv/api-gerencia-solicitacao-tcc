@@ -1,16 +1,29 @@
-import { Controller, Post, Body, Get, Delete, UsePipes, ValidationPipe, Param, Put, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ActingAreaService } from '../services/acting-area.service';
 import { PeopleService } from '../services/people.service';
 
 @Controller('api/v1/area')
 export class ActingAreaController {
-  constructor(private readonly actingAreaService: ActingAreaService) { }
+  constructor(private readonly actingAreaService: ActingAreaService) {}
 
   @Post('createPeopleArea')
   @UsePipes(ValidationPipe)
   async createPeopleArea(@Body() createPeopleAreaDto: any): Promise<any> {
-    const create = await this.actingAreaService.createPeopleArea(createPeopleAreaDto);
+    const create = await this.actingAreaService.createPeopleArea(
+      createPeopleAreaDto
+    );
 
     return create;
   }
@@ -18,7 +31,9 @@ export class ActingAreaController {
   @Post('createActingArea')
   @UsePipes(ValidationPipe)
   async createActingArea(@Body() createActingAreaDto: any): Promise<any> {
-    const createArea = await this.actingAreaService.createActingArea(createActingAreaDto);
+    const createArea = await this.actingAreaService.createActingArea(
+      createActingAreaDto
+    );
 
     return createArea;
   }
@@ -32,10 +47,10 @@ export class ActingAreaController {
     return areas;
   }
 
-  @Get('listPeopleArea')
+  @Get('listTeacherArea')
   @UsePipes(ValidationPipe)
-  async getAllPeopleAreas(): Promise<any> {
-    const areas = await this.actingAreaService.getAllPeopleArea();
+  async getAllTeachers(): Promise<any> {
+    const areas = await this.actingAreaService.getAllTeachersArea();
 
     return areas;
   }

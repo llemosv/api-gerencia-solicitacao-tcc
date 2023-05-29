@@ -7,13 +7,15 @@ import { LocalAuthGuard } from '../strategies/local.strategy';
 
 @Controller('api/v1/login')
 export class LoginController {
-  constructor(private readonly loginService: LoginService) { }
+  constructor(private readonly loginService: LoginService) {}
 
   @Post()
   @UsePipes(LocalAuthGuard)
-  async login(@Body() loginDto: LoginDto, @Res() response: Response): Promise<any> {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res() response: Response
+  ): Promise<any> {
     const user = await this.loginService.validateUser(loginDto);
-
     const token = await this.loginService.generateToken(loginDto, user);
 
     return response.status(200).json(token);

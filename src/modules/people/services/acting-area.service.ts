@@ -12,8 +12,8 @@ import { PeopleArea } from '../interfaces/people-area.interface';
 export class ActingAreaService {
   constructor(
     @InjectModel('ActingArea') private readonly actingArea: Model<ActingArea>,
-    @InjectModel('PeopleArea') private readonly peopleArea: Model<PeopleArea>,
-  ) { }
+    @InjectModel('PeopleArea') private readonly peopleArea: Model<PeopleArea>
+  ) {}
 
   private readonly logger = new Logger(ActingAreaService.name);
 
@@ -38,8 +38,39 @@ export class ActingAreaService {
     return search;
   }
 
-  async getAllPeopleArea(): Promise<any> {
-    const search = await this.peopleArea.find().populate('id_pessoa').populate('id_area').exec();
-    return search;
+  async getAllTeachersArea(): Promise<any> {
+    const search = await this.peopleArea
+      .find()
+      .populate({
+        path: 'id_pessoa',
+        match: { id_tipo_pessoa: '643bf78fed7b6eb4a6383a7e' },
+      })
+      .populate('id_area')
+      .exec();
+
+    const filteredResults = search.filter((item) => item.id_pessoa !== null);
+
+    const formattedResults = filteredResults.reduce(
+      (result: any, item: any) => {
+        const existingPerson = result.find(
+          (person) => person.id_pessoa === item.id_pessoa._id.toString()
+        );
+
+        if (existingPerson) {
+          existingPerson.areas.push(item.id_area.descricao);
+        } else {
+          result.push({
+            id_pessoa: item.id_pessoa._id.toString(),
+            nome: item.id_pessoa.nome,
+            areas: [item.id_area.descricao],
+          });
+        }
+
+        return result;
+      },
+      []
+    );
+
+    return formattedResults;
   }
 }
