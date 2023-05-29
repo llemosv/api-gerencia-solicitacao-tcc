@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { SolicitationSchema } from './interfaces/schemas/solicitationschema';
+import { SolicitationSchema } from './interfaces/schemas/solicitation.schema';
 import { SolicitationController } from './solicitation.controller';
 import { SolicitationService } from './solicitation.service';
 

@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { LoginModule } from './modules/login/login.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SolicitationModule } from './modules/solicitations/solicitation.module';
+import { TasksModule } from './modules/tasks/tasks.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { SolicitationModule } from './modules/solicitations/solicitation.module'
     PeopleModule,
     LoginModule,
     SolicitationModule,
+    TasksModule,
   ],
   controllers: [],
   providers: [],
