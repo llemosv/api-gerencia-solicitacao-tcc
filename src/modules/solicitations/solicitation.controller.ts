@@ -26,7 +26,7 @@ export class SolicitationController {
   }
 
   @Get(':_id')
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   async update(@Param('_id') _id: string): Promise<any> {
     return await this.solicitationService.getSolicitations(_id);
   }
