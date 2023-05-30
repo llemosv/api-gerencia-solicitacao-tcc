@@ -47,7 +47,7 @@ export class SolicitationService {
       id: solicitation._id,
       nome: solicitation.id_aluno_solicitante.nome,
       orientador: solicitation.id_professor_orientador.nome,
-      descricao: solicitation.nome_projeto,
+      descricao: `Tema: ${solicitation.nome_projeto}`,
       message: solicitation.descricao,
     }));
 
