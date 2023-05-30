@@ -45,10 +45,10 @@ export class SolicitationService {
 
     const formattedData = solicitations.map((solicitation: any) => ({
       id: solicitation._id,
-      aluno: solicitation.id_aluno_solicitante.nome,
+      nome: solicitation.id_aluno_solicitante.nome,
       orientador: solicitation.id_professor_orientador.nome,
-      tema: solicitation.nome_projeto,
-      descricao: solicitation.descricao,
+      descricao: solicitation.nome_projeto,
+      message: solicitation.descricao,
     }));
 
     this.logger.log('SOLICITAÇÕES BUSCADAS COM SUCESSO!');
