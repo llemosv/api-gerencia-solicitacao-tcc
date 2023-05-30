@@ -42,7 +42,7 @@ export class SolicitationController {
   @UsePipes(ValidationPipe)
   async accept(
     @Param('_id') _id: string,
-    @Query('accept') accept: boolean
+    @Body() accept: boolean
   ): Promise<any> {
     await this.solicitationService.acceptSolicitation(_id, accept);
   }
