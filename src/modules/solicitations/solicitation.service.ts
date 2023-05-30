@@ -28,14 +28,19 @@ export class SolicitationService {
     id: string,
     solicitacao_aceita: boolean
   ): Promise<any> {
-    const solicitations = await this.solicitationModel
-      .find({ solicitacao_aceita })
+    let query = this.solicitationModel
+      .find()
       .where('$or')
       .equals([{ id_aluno_solicitante: id }, { id_professor_orientador: id }])
       .populate('id_aluno_solicitante', 'nome')
       .populate('id_professor_orientador', 'nome')
-      .select('nome_projeto descricao')
-      .exec();
+      .select('nome_projeto descricao');
+
+    if (!solicitacao_aceita) {
+      query = query.where('data_reprovacao').equals(null);
+    }
+
+    const solicitations = await query.exec();
 
     if (solicitations.length === 0) {
       this.logger.warn('NENHUMA SOLICITAÇÃO ENCONTRADA!');
@@ -56,7 +61,7 @@ export class SolicitationService {
     return formattedData;
   }
 
-  async acceptSolicitation(id: string): Promise<any> {
+  async acceptSolicitation(id: string, accept: boolean): Promise<any> {
     const solicitationExists = await this.solicitationModel
       .findOne({ _id: id })
       .exec();
@@ -65,11 +70,20 @@ export class SolicitationService {
       throw new NotFoundException(`Solicitação não encontrada!`);
     }
 
-    await this.solicitationModel
-      .findOneAndUpdate(
-        { _id: id },
-        { $set: { solicitacao_aceita: true, data_aprovacao: new Date() } }
-      )
-      .exec();
+    if (accept) {
+      return await this.solicitationModel
+        .findOneAndUpdate(
+          { _id: id },
+          { $set: { solicitacao_aceita: true, data_aprovacao: new Date() } }
+        )
+        .exec();
+    } else {
+      return await this.solicitationModel
+        .findOneAndUpdate(
+          { _id: id },
+          { $set: { solicitacao_aceita: false, data_reprovacao: new Date() } }
+        )
+        .exec();
+    }
   }
 }
