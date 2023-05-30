@@ -26,9 +26,23 @@ export class SolicitationService {
 
   async getSolicitations(id: string, solicitacao_aceita: string): Promise<any> {
     const solicitations = await this.solicitationModel
-      .find({ solicitacao_aceita })
-      .where('$or')
-      .equals([{ id_aluno_solicitante: id }, { id_professor_orientador: id }])
+      .find({
+        $and: [
+          { solicitacao_aceita },
+          {
+            $or: [
+              { data_reprovacao: { $exists: false } },
+              { data_reprovacao: null },
+            ],
+          },
+          {
+            $or: [
+              { id_aluno_solicitante: id },
+              { id_professor_orientador: id },
+            ],
+          },
+        ],
+      })
       .populate('id_aluno_solicitante', 'nome')
       .populate('id_professor_orientador', 'nome')
       .select('nome_projeto descricao')
