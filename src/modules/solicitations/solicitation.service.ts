@@ -53,7 +53,7 @@ export class SolicitationService {
     return formattedData;
   }
 
-  async acceptSolicitation(id: string, accept: boolean): Promise<any> {
+  async acceptSolicitation(id: string, accept: string): Promise<any> {
     const solicitationExists = await this.solicitationModel
       .findOne({ _id: id })
       .exec();
@@ -62,7 +62,7 @@ export class SolicitationService {
       throw new NotFoundException(`Solicitação não encontrada!`);
     }
 
-    if (accept) {
+    if (accept === 'true') {
       return await this.solicitationModel
         .findOneAndUpdate(
           { _id: id },
