@@ -24,23 +24,15 @@ export class SolicitationService {
     return save;
   }
 
-  async getSolicitations(
-    id: string,
-    solicitacao_aceita: boolean
-  ): Promise<any> {
-    let query = this.solicitationModel
-      .find()
+  async getSolicitations(id: string, solicitacao_aceita: string): Promise<any> {
+    const solicitations = await this.solicitationModel
+      .find({ solicitacao_aceita })
       .where('$or')
       .equals([{ id_aluno_solicitante: id }, { id_professor_orientador: id }])
       .populate('id_aluno_solicitante', 'nome')
       .populate('id_professor_orientador', 'nome')
-      .select('nome_projeto descricao');
-
-    if (!solicitacao_aceita) {
-      query = query.where('data_reprovacao').equals(null);
-    }
-
-    const solicitations = await query.exec();
+      .select('nome_projeto descricao')
+      .exec();
 
     if (solicitations.length === 0) {
       this.logger.warn('NENHUMA SOLICITAÇÃO ENCONTRADA!');

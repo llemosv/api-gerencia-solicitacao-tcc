@@ -30,7 +30,7 @@ export class SolicitationController {
   // @UseGuards(AuthGuard('jwt'))
   async getSolicitation(
     @Param('_id') _id: string,
-    @Query('solicitacao_aceita') solicitacao_aceita: boolean
+    @Query('solicitacao_aceita') solicitacao_aceita: string
   ): Promise<any> {
     return await this.solicitationService.getSolicitations(
       _id,
